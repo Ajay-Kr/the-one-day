@@ -33,4 +33,3 @@ Use this workflow to structure and validate the plan for a new feature or signif
 5. **Review & Confirm with User**
    - Present the concise plan, highlighting key decisions, potential trade-offs, and questions.
    - Await user approval before commencing implementation.
-

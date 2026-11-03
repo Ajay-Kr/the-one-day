@@ -5,6 +5,7 @@ trigger: always_on
 # Git and Repository Workflow — The One Day
 
 ## 1. Branch Conventions
+
 - **Stable Trunk:** The `main` branch must always remain deployable and buildable.
 - **Short-Lived Task Branches:** All development occurs on focused, short-lived task branches branched from `main`. Do not work directly on `main`.
 - **Branch Prefix Taxonomy:**
@@ -16,6 +17,7 @@ trigger: always_on
   - `test/`: Test additions or corrections
 
 ## 2. Commit Message Conventions
+
 Follow the **Conventional Commits** specification:
 
 `type(optional-scope): description`
@@ -26,24 +28,30 @@ Follow the **Conventional Commits** specification:
 - **Breaking Changes:** Explicitly document breaking changes with `BREAKING CHANGE:` in the commit footer or a `!` after the type/scope (e.g., `feat(api)!: migrate payload format`).
 
 ## 3. Secret Protection
+
 - **No Credentials:** Never commit API keys, tokens, certificates, credentials, private keys, or `.env` files containing secrets.
 - **Environment Exclusions:** Ensure `.env*` files remain strictly excluded by `.gitignore` (only sanitized `.env.example` may be tracked).
 - **Inspection:** Before staging files, inspect `git status` and diffs to confirm no credential leakage. If a secret is staged or committed locally, stop immediately, alert the user, and rotate the secret.
 
 ## 4. Pre-Commit Validation
+
 Before creating any commit:
+
 1. Inspect staged changes (`git diff --staged`) to ensure no unrelated, machine-generated, or secret files are included.
 2. Run code formatting and lint checks.
 3. Validate that commit messages adhere strictly to Conventional Commits.
 
 ## 5. Pre-Push Validation
+
 Before pushing any branch to the remote:
-1. Run strict TypeScript validation (`npm run type-check`).
-2. Run automated test suites (`npm test`).
-3. Run a production build (`npm run build`) to ensure zero bundling or build errors.
+
+1. Run strict TypeScript validation (`pnpm run type-check`).
+2. Run automated test suites (`pnpm test` when configured).
+3. Run a production build (`pnpm run build`) to ensure zero bundling or build errors.
 4. Never push failing code to the remote.
 
 ## 6. Pull Request Expectations
+
 - **Single Objective:** Every PR must address a single, coherent objective linked to a task in `docs/TASKS.md` or a tracked issue.
 - **PR Title Convention:** The PR title must strictly adhere to the Conventional Commits format (`type(optional-scope): description`), verified by `.github/workflows/pr-title.yml`.
 - **Template Completion:** Fill out `.github/pull_request_template.md` completely, clearly separating automated tool checks from human declarations.
@@ -52,6 +60,7 @@ Before pushing any branch to the remote:
 - **Review & Resolution:** All CI checks and conversation threads must be resolved before merging into `main`.
 
 ## 7. Agent Permissions & Guardrails
+
 - **No Unprompted Commits:** Never run `git commit` without explicit user instruction.
 - **No Unprompted Remote Operations:** Never push (`git push`), pull, fetch, merge, or alter remotes without explicit user instruction.
 - **No Branch Destruction:** Never delete branches, force-push (`--force`), or bypass review gates.

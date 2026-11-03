@@ -37,4 +37,3 @@ Use this workflow to perform a structured audit of visual styling, responsive ad
      - **Critical (P0):** Accessibility failures, broken layouts, or severe contrast issues.
      - **Improvement (P1):** Token alignment, spacing polish, typography tuning.
      - **Nice-to-Have (P2):** Minor aesthetic polish or subtle enhancement.
-

@@ -13,6 +13,7 @@ Read `docs/PROJECT_CONTEXT.md` before proposing or making significant changes.
 ## 2. Source of truth
 
 The authoritative project documentation lives in `docs/`:
+
 - `docs/PROJECT_CONTEXT.md`: project purpose, identity, pillars, audience, and core philosophy.
 - `docs/DESIGN_EXPLORATION.md`: visual direction, palette, typography, and layout decisions.
 - `docs/DESIGN_REFERENCE_RESEARCH.md`: comparative analysis of reference portfolio repositories.
@@ -27,6 +28,7 @@ Do not silently override an accepted decision. If a decision needs changing, exp
 ## 3. Customizations architecture
 
 This repository uses the Google Antigravity customization system:
+
 - **Workspace Rules** (`.agents/rules/`):
   - `product-principles.md`: Core philosophy, audience balance, and authenticity (`always_on`).
   - `frontend-standards.md`: Architecture standards, Server Components, design tokens, and accessibility (`glob`).
@@ -68,6 +70,7 @@ This repository uses the Google Antigravity customization system:
 ## 6. Working process
 
 Before implementation:
+
 1. Understand the relevant project documentation.
 2. Inspect the existing code and conventions.
 3. Identify the files likely to change.
@@ -75,12 +78,14 @@ Before implementation:
 5. Ask before making decisions that materially change scope.
 
 During implementation:
+
 1. Make focused changes.
 2. Avoid unrelated refactoring.
 3. Keep accessibility and responsive behaviour in mind.
 4. Do not fabricate personal stories, photographs, project metrics, or professional achievements.
 
 After implementation:
+
 1. Run relevant lint, type-check, and build commands.
 2. Report what changed.
 3. Report validation results and any checks not run.

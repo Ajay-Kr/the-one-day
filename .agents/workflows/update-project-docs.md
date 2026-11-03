@@ -36,4 +36,3 @@ Use this workflow to keep project documentation strictly aligned with recent imp
 5. **Verify Coherence & Report**
    - Ensure [`README.md`](../README.md) and [`AGENTS.md`](../AGENTS.md) remain synchronized with updated documentation links.
    - Report a concise summary of documentation updates made.
-

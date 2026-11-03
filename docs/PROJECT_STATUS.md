@@ -6,11 +6,13 @@
 ---
 
 ## Summary
-The Google Antigravity instruction system, workspace rules, skills, and manual workflows have been fully configured. Reference research analyzing benchmark repositories (`bchiang7/v4`, `magicuidesign/portfolio`, `vercel/nextjs-portfolio-starter`) is completed and documented. Core architectural principles have been formally accepted in the decision register. The initial documentation and governance commit has been pushed to GitHub (`main`). Repository governance has been completed with GitHub issue templates, a refined PR template distinguishing automated from human checks, and a semantic PR title validation workflow (`pr-title.yml`). No application implementation has started, preserving clean boundaries pending user resume and authentic asset uploads.
+
+The Next.js 16.4.4 App Router technical foundation has been initialised with Node.js 24 runtime standardization, TypeScript strict mode, Tailwind CSS design tokens, and pnpm package management. Developer tooling (Husky, lint-staged, Commitlint 21, Prettier, ESLint 10 with native flat config) and GitHub Actions CI pipeline (`ci.yml` running Node.js 24) are active and validated. Project structure has been scaffolded cleanly under `src/`. No product content, homepage implementation, database, or external backend infrastructure has been added, maintaining clean boundaries pending user resume and authentic asset uploads.
 
 ---
 
 ## Completed
+
 - [x] Read and acknowledge project master prompt and context.
 - [x] Establish identity: **The One Day — EST. 2026**.
 - [x] Capture core narrative: “It was always going to be one day. Today is that day.”
@@ -25,11 +27,13 @@ The Google Antigravity instruction system, workspace rules, skills, and manual w
 - [x] Document accepted design and architectural principles D-011 through D-019 (`docs/DECISIONS.md`).
 - [x] Establish Git & GitHub governance, repository hygiene (`.gitignore`, `.editorconfig`, PR template), toolchain & CI plan, and agent Git restrictions (`docs/GIT_GOVERNANCE.md`, `.agents/rules/git-workflow.md`, `D-020`).
 - [x] Create GitHub issue templates (bug report, feature request), PR title validation workflow (`pr-title.yml`), and refined PR template with human vs. automated separation.
+- [x] Initialize technical foundation with Next.js 16.4.4 App Router, React 19, Node.js 24 runtime, TypeScript strict mode, Tailwind CSS with design tokens, pnpm, ESLint 10 CLI with native flat config, Prettier, Husky, lint-staged, Commitlint 21, and GitHub Actions CI workflow (T-009).
 - [x] Update project backlog and documentation navigation (`README.md`, `docs/TASKS.md`).
 
 ---
 
 ## In Progress
+
 - [~] Discovery of professional content — awaiting user's latest resume.
 - [~] Discovery of visual assets — awaiting user's sketches, yoga photographs, and personal photography.
 - [~] Visual identity token definition — provisional recommendation ready for owner approval.
@@ -37,6 +41,7 @@ The Google Antigravity instruction system, workspace rules, skills, and manual w
 ---
 
 ## Pending
+
 1. Receive and review latest resume (T-001).
 2. Receive and inventory available creative sketches, yoga photographs, and travel photography (T-002).
 3. Identify professional case studies and verified achievements.
@@ -48,6 +53,7 @@ The Google Antigravity instruction system, workspace rules, skills, and manual w
 ---
 
 ## Known Limitations
+
 - No resume has yet been supplied in this project session.
 - No creative assets (sketches, yoga photos, photography) have yet been supplied in this project session.
 - Application code, dependencies, and database/CMS infrastructure have intentionally not been created yet, in accordance with Phase 0 discovery discipline.
@@ -55,4 +61,5 @@ The Google Antigravity instruction system, workspace rules, skills, and manual w
 ---
 
 ## Next Action
+
 User to upload the latest resume and available creative/personal assets (old sketches, yoga photographs, and native place/personal photography).

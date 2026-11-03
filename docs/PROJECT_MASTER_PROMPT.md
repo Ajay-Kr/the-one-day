@@ -1,4 +1,5 @@
 # PROJECT MASTER PROMPT
+
 # THE ONE DAY — Personal Portfolio & Engineering Journey
 
 ## 1. YOUR ROLE
