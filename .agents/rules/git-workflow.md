@@ -44,10 +44,12 @@ Before pushing any branch to the remote:
 4. Never push failing code to the remote.
 
 ## 6. Pull Request Expectations
-- Every PR must address a single, coherent objective linked to a task in `docs/TASKS.md`.
-- Fill out `.github/pull_request_template.md` completely.
-- Include visual proof (screenshots or video) for all UI changes on both mobile and desktop viewports.
-- All CI checks and conversation threads must be resolved before merging into `main`.
+- **Single Objective:** Every PR must address a single, coherent objective linked to a task in `docs/TASKS.md` or a tracked issue.
+- **PR Title Convention:** The PR title must strictly adhere to the Conventional Commits format (`type(optional-scope): description`), verified by `.github/workflows/pr-title.yml`.
+- **Template Completion:** Fill out `.github/pull_request_template.md` completely, clearly separating automated tool checks from human declarations.
+- **Truthful Declarations:** Never check off author declarations (content integrity, WCAG AA accessibility, responsive behavior, reduced motion) without having actively verified them.
+- **Visual Proof:** Include visual evidence (screenshots or video) for all UI changes on both mobile and desktop viewports.
+- **Review & Resolution:** All CI checks and conversation threads must be resolved before merging into `main`.
 
 ## 7. Agent Permissions & Guardrails
 - **No Unprompted Commits:** Never run `git commit` without explicit user instruction.

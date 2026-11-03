@@ -6,7 +6,7 @@
 ---
 
 ## Summary
-The Google Antigravity instruction system, workspace rules, skills, and manual workflows have been fully configured. Reference research analyzing benchmark repositories (`bchiang7/v4`, `magicuidesign/portfolio`, `vercel/nextjs-portfolio-starter`) is completed and documented. Core architectural principles (Content-first, Server Components by default, Design tokens, Composition over inheritance, Feature-oriented structure, Minimal dependencies) have been formally accepted in the decision register. No application implementation has started, preserving clean boundaries pending user resume and authentic asset uploads.
+The Google Antigravity instruction system, workspace rules, skills, and manual workflows have been fully configured. Reference research analyzing benchmark repositories (`bchiang7/v4`, `magicuidesign/portfolio`, `vercel/nextjs-portfolio-starter`) is completed and documented. Core architectural principles have been formally accepted in the decision register. The initial documentation and governance commit has been pushed to GitHub (`main`). Repository governance has been completed with GitHub issue templates, a refined PR template distinguishing automated from human checks, and a semantic PR title validation workflow (`pr-title.yml`). No application implementation has started, preserving clean boundaries pending user resume and authentic asset uploads.
 
 ---
 
@@ -24,6 +24,7 @@ The Google Antigravity instruction system, workspace rules, skills, and manual w
 - [x] Conduct and document reference research on benchmark portfolios (`docs/DESIGN_REFERENCE_RESEARCH.md`).
 - [x] Document accepted design and architectural principles D-011 through D-019 (`docs/DECISIONS.md`).
 - [x] Establish Git & GitHub governance, repository hygiene (`.gitignore`, `.editorconfig`, PR template), toolchain & CI plan, and agent Git restrictions (`docs/GIT_GOVERNANCE.md`, `.agents/rules/git-workflow.md`, `D-020`).
+- [x] Create GitHub issue templates (bug report, feature request), PR title validation workflow (`pr-title.yml`), and refined PR template with human vs. automated separation.
 - [x] Update project backlog and documentation navigation (`README.md`, `docs/TASKS.md`).
 
 ---
