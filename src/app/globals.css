@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Surface / Paper Palette */
+  --color-paper-50: #faf9f6;
+  --color-paper-100: #f5f3ef;
+  --color-paper-200: #ece7e1;
+  --color-paper-300: #dfd8ce;
+  --color-paper-400: #c8c0b5;
+
+  /* Ink / Text Palette */
+  --color-ink-900: #1a1918;
+  --color-ink-700: #383533;
+  --color-ink-500: #66615c;
+  --color-ink-300: #9c968f;
+  --color-ink-100: #d6d2cb;
+
+  /* Controlled Chapter Accent Tokens */
+  --color-accent-terracotta: #c05c46;
+  --color-accent-indigo: #2e4a62;
+  --color-accent-sage: #5b7065;
+  --color-accent-ochre: #c98a2c;
+
+  /* Typography Stacks */
+  --font-editorial: "Newsreader", "Charter", "Georgia", serif;
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-paper-100);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  /* Accessible focus indicators across all interactive elements */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-indigo);
+    outline-offset: 2px;
+  }
+}
+
+/* Accessibility: Universal reduced motion override */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

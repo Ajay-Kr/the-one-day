@@ -5,7 +5,8 @@
 ## Related Issue / Backlog Reference
 
 <!-- Reference the corresponding task from docs/TASKS.md (e.g., T-009, T-010) or GitHub issue number (e.g., #12). -->
-Closes: 
+
+Closes:
 
 ## Type of Change
 
@@ -23,15 +24,19 @@ Closes:
 ## Verification Checklist
 
 ### 1. Automated & Tool-Enforced Checks (Local & CI)
+
 <!-- These will be validated by GitHub Actions CI and local pre-commit hooks once active. -->
+
 - [ ] **PR Title:** Follows Conventional Commits format (`type(optional-scope): description`).
-- [ ] **Type Safety:** TypeScript passes strictly with zero errors (`npm run type-check`).
-- [ ] **Linting & Code Quality:** Linter passes cleanly with zero warnings (`npm run lint`).
-- [ ] **Automated Tests:** Test suite passes without failures (`npm test`).
-- [ ] **Production Build:** Application builds cleanly without errors (`npm run build`).
+- [ ] **Type Safety:** TypeScript passes strictly with zero errors (`pnpm run type-check`).
+- [ ] **Linting & Code Quality:** Linter passes cleanly with zero warnings (`pnpm run lint`).
+- [ ] **Automated Tests:** Test suite passes without failures (`pnpm test` when present).
+- [ ] **Production Build:** Application builds cleanly without errors (`pnpm run build`).
 
 ### 2. Human Declarations & Standards (Author Sign-Off)
+
 <!-- The PR author manually attests to these essential project principles. -->
+
 - [ ] **Content Integrity:** Absolutely no fabricated personal stories, employment credentials, project metrics, or unlicensed third-party media.
 - [ ] **Responsive Design:** Manually verified layout and touch targets across mobile (360px+), tablet, and desktop viewports with zero horizontal overflow.
 - [ ] **Accessibility (WCAG 2.1 AA):** Verified semantic landmarks, keyboard tab navigation, visible `:focus-visible` focus outlines, and color contrast.
@@ -43,10 +48,10 @@ Closes:
 
 <!-- Attach before/after screenshots or recordings for UI modifications on mobile and desktop viewports. -->
 
-| Viewport | Before | After |
-| :--- | :--- | :--- |
-| Mobile (< 480px) | *None* | *Screenshot/Recording* |
-| Desktop (1280px+) | *None* | *Screenshot/Recording* |
+| Viewport          | Before | After                  |
+| :---------------- | :----- | :--------------------- |
+| Mobile (< 480px)  | _None_ | _Screenshot/Recording_ |
+| Desktop (1280px+) | _None_ | _Screenshot/Recording_ |
 
 ## Known Limitations / Notes
 

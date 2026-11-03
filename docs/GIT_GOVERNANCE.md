@@ -12,6 +12,7 @@
 To ensure high technical quality, reproducibility, and safety during development of **The One Day**, this document defines the governance rules, branch strategy, commit conventions, tooling architecture, CI design, and GitHub branch protection standards.
 
 Even in solo development, strict automation and branch governance:
+
 - Protect `main` from broken builds and runtime regressions.
 - Ensure all commits tell a clean, searchable story.
 - Enforce automated quality gates before any code merges.
@@ -24,22 +25,24 @@ The initial repository documentation, agent configuration, and baseline governan
 ## 2. Branch Strategy
 
 ### The Trunk (`main`)
+
 - `main` is the production-ready trunk.
 - Every commit on `main` must pass all linting, type checking, testing, and production build checks.
 - Direct pushes to `main` are restricted. All changes merge into `main` via reviewed Pull Requests.
 
 ### Short-Lived Task Branches
+
 - Every task begins on a dedicated, short-lived branch cut from the latest `main`.
 - Branch naming follows this strict prefix taxonomy:
 
-| Branch Prefix | Purpose | Example |
-| :--- | :--- | :--- |
-| `feat/` | New feature or user-facing capability | `feat/portfolio-hero` |
-| `fix/` | Bug fix or defect remediation | `fix/mobile-nav-contrast` |
-| `refactor/` | Code reorganization without functional changes | `refactor/token-structure` |
-| `chore/` | Tooling, configuration, or hygiene | `chore/update-git-governance` |
-| `docs/` | Documentation additions or revisions | `docs/design-reference-research` |
-| `test/` | Adding or correcting test suites | `test/case-study-parser` |
+| Branch Prefix | Purpose                                        | Example                          |
+| :------------ | :--------------------------------------------- | :------------------------------- |
+| `feat/`       | New feature or user-facing capability          | `feat/portfolio-hero`            |
+| `fix/`        | Bug fix or defect remediation                  | `fix/mobile-nav-contrast`        |
+| `refactor/`   | Code reorganization without functional changes | `refactor/token-structure`       |
+| `chore/`      | Tooling, configuration, or hygiene             | `chore/update-git-governance`    |
+| `docs/`       | Documentation additions or revisions           | `docs/design-reference-research` |
+| `test/`       | Adding or correcting test suites               | `test/case-study-parser`         |
 
 Branches must be deleted after merging to keep the repository clean.
 
@@ -50,6 +53,7 @@ Branches must be deleted after merging to keep the repository clean.
 All commits and Pull Request titles in this repository must strictly adhere to the [Conventional Commits v1.0.0](https://www.conventionalcommits.org/) specification.
 
 ### Format
+
 ```text
 type(optional-scope): description
 
@@ -59,6 +63,7 @@ type(optional-scope): description
 ```
 
 ### Allowed Types
+
 - `feat`: A new user-facing feature or capability.
 - `fix`: A bug fix or defect remediation.
 - `docs`: Documentation changes only.
@@ -72,12 +77,14 @@ type(optional-scope): description
 - `revert`: Reverts a previous commit.
 
 ### Style Rules
+
 - Type and scope must be lowercase.
 - Description must be concise, imperative, and present tense (e.g., `add editorial typography tokens`, NOT `added` or `adds`).
 - No trailing period in the description or PR title.
 - Breaking changes must include `!` before the colon (e.g., `feat(api)!: migrate endpoint`) or a `BREAKING CHANGE:` footer.
 
 ### PR Title Validation vs. Local Commit Validation
+
 A two-layer enforcement mechanism ensures that commit history remains pristine:
 
 1. **Pull Request Title Validation (Automated GitHub Workflow):**
@@ -94,6 +101,7 @@ A two-layer enforcement mechanism ensures that commit history remains pristine:
 ## 4. Repository Hygiene, Templates & Secret Protection
 
 ### Files in Place
+
 - [`.gitignore`](../.gitignore): Excludes operating system artifacts (`.DS_Store`), dependencies (`node_modules`), Next.js build output (`.next/`, `out/`), and temporary logs.
 - **Environment Isolation:** `.gitignore` enforces `.env*` exclusion while explicitly permitting `.env.example` (`!.env.example`).
 - [`.editorconfig`](../.editorconfig): Standardizes 2-space indentation, UTF-8 charset, LF line endings, and trailing newline trimming across all development environments.
@@ -103,15 +111,18 @@ A two-layer enforcement mechanism ensures that commit history remains pristine:
 - [`.github/workflows/pr-title.yml`](../.github/workflows/pr-title.yml): Lightweight, dependency-free PR title semantic validation workflow.
 
 ### PR Checklist vs. Automated Enforcement
+
 To ensure clarity during development and code review, verification duties are split into two complementary layers:
 
-| Layer | Responsibility | Enforced By | Scope |
-| :--- | :--- | :--- | :--- |
-| **Automated Checks** | Deterministic code validation | GitHub Actions (`pr-title.yml`, future `ci.yml`) | PR title syntax, TypeScript compilation, linting, unit tests, production build |
+| Layer                  | Responsibility                  | Enforced By                                         | Scope                                                                                                                                                                                                      |
+| :--------------------- | :------------------------------ | :-------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Automated Checks**   | Deterministic code validation   | GitHub Actions (`pr-title.yml`, future `ci.yml`)    | PR title syntax, TypeScript compilation, linting, unit tests, production build                                                                                                                             |
 | **Human Declarations** | Qualitative & ethical standards | Author & Reviewer checklist sign-off in PR template | Content integrity (no fabricated stories/metrics), real mobile/tablet responsive testing, WCAG 2.1 AA keyboard/contrast audits, reduced-motion compliance, secret exclusion, documentation synchronization |
 
 ### Strict Non-Ignored Elements
+
 The following directories and files must **never** be ignored by `.gitignore`:
+
 - `AGENTS.md` and `README.md`
 - `.agents/` (workspace rules, skills, workflows)
 - `docs/` (all project documentation)
@@ -131,28 +142,26 @@ git push   -> Pre-push Hook (Typecheck + Unit Tests + Production Build) -> Remot
 ```
 
 ### 1. Husky (`^9.x`)
+
 - Manages Git hooks in `.husky/`.
 - Hooks configured:
-  - `commit-msg`: Runs `npx --no -- commitlint --edit "$1"` to enforce Conventional Commits.
-  - `pre-commit`: Runs `npx lint-staged` to format and lint staged files.
-  - `pre-push`: Runs `npm run type-check && npm test` to prevent pushing broken code.
+  - `commit-msg`: Runs `pnpm exec commitlint --edit "$1"` to enforce Conventional Commits.
+  - `pre-commit`: Runs `pnpm exec lint-staged` to format and lint staged files.
+  - `pre-push`: Runs `pnpm run type-check` to prevent pushing broken code.
 
 ### 2. lint-staged (`^15.x`)
+
 - Restricts linting and formatting strictly to staged files for sub-second execution.
 - Planned configuration in `package.json` or `.lintstagedrc.json`:
   ```json
   {
-    "*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,css,scss,yml,yaml}": [
-      "prettier --write"
-    ]
+    "*.{ts,tsx,js,jsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md,css,scss,yml,yaml}": ["prettier --write"]
   }
   ```
 
 ### 3. Commitlint (`@commitlint/cli`, `@commitlint/config-conventional`)
+
 - Validates that commit messages match our allowed types and format.
 - Planned configuration in `.commitlintrc.json`:
   ```json
@@ -163,8 +172,17 @@ git push   -> Pre-push Hook (Typecheck + Unit Tests + Production Build) -> Remot
         2,
         "always",
         [
-          "feat", "fix", "docs", "style", "refactor",
-          "perf", "test", "build", "ci", "chore", "revert"
+          "feat",
+          "fix",
+          "docs",
+          "style",
+          "refactor",
+          "perf",
+          "test",
+          "build",
+          "ci",
+          "chore",
+          "revert"
         ]
       ],
       "subject-case": [2, "never", ["sentence-case", "start-case", "pascal-case", "upper-case"]]
@@ -173,6 +191,7 @@ git push   -> Pre-push Hook (Typecheck + Unit Tests + Production Build) -> Remot
   ```
 
 ### 4. Prettier & ESLint
+
 - **Prettier:** Enforces consistent editorial formatting (2 spaces, single quotes or standard JSX quotes, trailing commas).
 - **ESLint:** Configured with `next/core-web-vitals`, `@typescript-eslint/recommended`, and `eslint-plugin-jsx-a11y` for strict accessibility validation during development.
 
@@ -183,21 +202,25 @@ git push   -> Pre-push Hook (Typecheck + Unit Tests + Production Build) -> Remot
 Continuous integration is rolled out in two deliberate stages to prevent CI pipeline failures:
 
 ### Stage 1: PR Title Semantic Validation (Active Immediately)
+
 - Configured in [`.github/workflows/pr-title.yml`](../.github/workflows/pr-title.yml).
 - Requires zero package dependencies or build scripts.
 - Runs on `pull_request_target` with minimal `pull-requests: read` permission.
 - Verifies PR titles against Conventional Commits before any merge can proceed.
 
-### Stage 2: Application CI (Deferred until Next.js Initialization)
-- The full application CI pipeline (`.github/workflows/ci.yml`) is intentionally deferred until Task `T-009` (Initialize Next.js application).
-- Creating it earlier would cause immediate CI failures because `package.json`, `npm run lint`, `npm run type-check`, and `npm run build` do not yet exist.
+### Stage 2: Application CI (Active)
 
-#### Proposed Stage 2 Workflow Definition (`.github/workflows/ci.yml`)
+- Configured in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
+- Automatically triggers on pulls requests to `main` and pushes to `main`.
+- Employs `pnpm/action-setup@v4` with `pnpm install --frozen-lockfile` and pnpm store caching.
+- Validates Prettier formatting, ESLint rules, TypeScript strict typing, and Next.js production build.
+
+#### Stage 2 Workflow Definition (`.github/workflows/ci.yml`)
 
 ```yaml
 name: CI
 
-on:
+"on":
   push:
     branches: [main]
   pull_request:
@@ -206,6 +229,9 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   validate:
@@ -219,29 +245,31 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.0
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Check code formatting (Prettier)
-        run: npx prettier --check .
+        run: pnpm run format:check
 
       - name: Lint code & accessibility (ESLint)
-        run: npm run lint
+        run: pnpm run lint
 
       - name: TypeScript type check
-        run: npm run type-check
-
-      - name: Run automated tests
-        run: npm test --if-present
+        run: pnpm run type-check
 
       - name: Production build audit
-        run: npm run build
+        run: pnpm run build
         env:
           NEXT_TELEMETRY_DISABLED: 1
 ```
@@ -253,29 +281,31 @@ jobs:
 The repository on GitHub is public. The repository owner should configure the following branch protection settings manually via GitHub's web interface (**Settings > Branches > Add branch ruleset** or **Branch protection rule** for `main`):
 
 ### Immediate Protection Settings (Ready Now)
+
 - [ ] **Branch name pattern:** Set to `main`.
 - [ ] **Require a pull request before merging:**
-  - Check *Require a pull request before merging*.
-  - Set *Required approvals* to `0` (for solo development) or `1` if collaborating.
-  - Check *Dismiss stale pull request approvals when new commits are pushed*.
+  - Check _Require a pull request before merging_.
+  - Set _Required approvals_ to `0` (for solo development) or `1` if collaborating.
+  - Check _Dismiss stale pull request approvals when new commits are pushed_.
 - [ ] **Require status checks to pass before merging:**
-  - Check *Require status checks to pass before merging*.
-  - Check *Require branches to be up to date before merging*.
-  - **Status Check to require now:** `Validate PR Title` (the job name defined in `.github/workflows/pr-title.yml`). *Note: In GitHub's search box, search for `Validate PR Title` after opening your first pull request.*
+  - Check _Require status checks to pass before merging_.
+  - Check _Require branches to be up to date before merging_.
+  - **Status Check to require now:** `Validate PR Title` (the job name defined in `.github/workflows/pr-title.yml`). _Note: In GitHub's search box, search for `Validate PR Title` after opening your first pull request._
 - [ ] **Require conversation resolution before merging:**
-  - Check *Require conversation resolution before merging*. Ensures no unanswered questions or review comments remain open.
+  - Check _Require conversation resolution before merging_. Ensures no unanswered questions or review comments remain open.
 - [ ] **Do not allow bypassing the above settings:**
-  - Check *Do not allow bypassing the above settings* (enforces rules even for the repo owner, preventing accidental direct pushes).
+  - Check _Do not allow bypassing the above settings_ (enforces rules even for the repo owner, preventing accidental direct pushes).
 - [ ] **Restrict deletions and force pushes:**
-  - Check *Lock branch* / Ensure *Allow force pushes* is **unchecked** (disabled).
-  - Ensure *Allow deletions* is **unchecked** (disabled).
+  - Check _Lock branch_ / Ensure _Allow force pushes_ is **unchecked** (disabled).
+  - Ensure _Allow deletions_ is **unchecked** (disabled).
 - [ ] **Pull Request Merge Method:**
   - In **Settings > General > Pull Requests**:
     - [x] Allow squash merging (recommended for clean task-based history on `main`).
-    - [x] Default commit message: Set to *Pull request title and description* or *Pull request title*.
+    - [x] Default commit message: Set to _Pull request title and description_ or _Pull request title_.
     - [x] Automatically delete head branches (cleans up short-lived task branches upon merge).
 
 ### Future Protection Settings (After Next.js Setup)
+
 - [ ] Once the application CI workflow (`ci.yml`) is activated in Task `T-009`, add the second required status check: `Build, Lint & Verify` (job ID `validate`).
 
 ---
@@ -283,6 +313,7 @@ The repository on GitHub is public. The repository owner should configure the fo
 ## 8. Agent Permissions & Boundaries
 
 Antigravity operates under strict constraints regarding repository history:
+
 1. **Never commit without explicit instruction:** The agent must never call `git commit` unless the user explicitly requests a commit.
 2. **Never push or modify remotes:** The agent must never execute `git push`, change remote URLs, or alter remote branches.
 3. **Never rewrite history:** The agent must never use `git rebase -i`, `git commit --amend`, `git reset --hard`, or force pushes.

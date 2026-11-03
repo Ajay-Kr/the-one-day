@@ -12,6 +12,7 @@ Use this procedure when authoring or auditing components to ensure universal acc
 ## Procedure
 
 ### Step 1: Mobile-First Breakpoint Architecture
+
 1. Define styles mobile-first (base styles apply to small viewports, progressively enhanced via `sm:`, `md:`, `lg:`, `xl:` media queries).
 2. Validate against core device widths:
    - Mobile: 360px – 480px (touch targets at least 44x44px, single-column reading).
@@ -20,6 +21,7 @@ Use this procedure when authoring or auditing components to ensure universal acc
 3. Ensure no horizontal scrolling or clipped text occurs at any viewport width.
 
 ### Step 2: Semantic HTML & Landmark Architecture
+
 1. Structure every page with appropriate landmark regions:
    - `<header>` with top-level site identity and navigation.
    - `<nav aria-label="...">` with explicit purpose labels when multiple navigation bars exist.
@@ -29,6 +31,7 @@ Use this procedure when authoring or auditing components to ensure universal acc
    - `<footer>` for colophon, copyright, and global links.
 
 ### Step 3: Keyboard Navigation & Focus Indicators
+
 1. Verify all interactive elements (`<a>`, `<button>`, inputs) are navigable using the `Tab` and `Shift+Tab` keys.
 2. Ensure every interactive element has a visible, high-contrast focus indicator using `:focus-visible` (never `outline: none` without an alternative).
 3. Provide a hidden "Skip to main content" link as the first focusable element on each page.
@@ -38,6 +41,7 @@ Use this procedure when authoring or auditing components to ensure universal acc
    - Enable dismissal via the `Escape` key.
 
 ### Step 4: Color Contrast & Typography Readability
+
 1. Test all text color combinations against WCAG 2.1 AA ratios:
    - Normal text (< 18pt or < 14pt bold): minimum 4.5:1 contrast against surface.
    - Large text (≥ 18pt or ≥ 14pt bold): minimum 3.0:1 contrast against surface.
@@ -45,11 +49,12 @@ Use this procedure when authoring or auditing components to ensure universal acc
 2. Maintain comfortable reading line-lengths (45 to 75 characters per line).
 
 ### Step 5: Images & Media Alternatives
+
 1. Every informative image (sketch scans, photographs, architecture diagrams) must have a descriptive, meaningful `alt` attribute.
 2. Decorative illustrations, borders, or icons must be explicitly marked with `aria-hidden="true"`.
 3. Do not convey information using color alone (e.g., status indicators should include both text labels and color cues).
 
 ### Step 6: Motion Preferences
+
 1. Test interfaces with `prefers-reduced-motion: reduce`.
 2. Ensure transitions are replaced with immediate or cross-fade state changes so users with vestibular motion disorders experience no parallax or zooming.
-

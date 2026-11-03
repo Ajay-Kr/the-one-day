@@ -39,4 +39,3 @@ Use this workflow to implement an approved feature, component, or bug fix with d
 5. **Report & Document**
    - Summarize what was implemented, files created/modified, and validation results.
    - Note any open questions or follow-up items.
-
