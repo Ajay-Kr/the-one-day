@@ -15,8 +15,13 @@ It is designed to feel thoughtful, editorial, authentic, and technically credibl
 .
 ├── .editorconfig                      # Universal code style & whitespace configuration
 ├── .gitignore                         # Build, OS, log, and secret exclusion patterns
-├── .github/                           # GitHub repository templates & CI designs
-│   └── pull_request_template.md       # Pull request checklist & conventional format
+├── .github/                           # GitHub repository templates & CI workflows
+│   ├── ISSUE_TEMPLATE/                # GitHub issue templates
+│   │   ├── bug_report.md              # Defect and visual glitch report template
+│   │   └── feature_request.md         # Feature proposal aligned with creative pillars
+│   ├── pull_request_template.md       # PR checklist distinguishing automated & human checks
+│   └── workflows/                     # GitHub Actions continuous integration
+│       └── pr-title.yml               # Conventional Commit PR title semantic validation
 ├── AGENTS.md                          # Primary agent operating instructions and source of truth
 ├── README.md                          # Project overview and navigation
 ├── .agents/                           # Google Antigravity IDE configuration

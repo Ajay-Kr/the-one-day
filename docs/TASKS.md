@@ -15,8 +15,8 @@
 
 ### T-000b — Establish Git and GitHub governance & repository hygiene
 - **Objective:** Prepare the repository for disciplined, solo development with Google Antigravity and GitHub before application code is initialized.
-- **Approach:** Initialize local Git repository on `main`; create `.gitignore` (isolating `.env*` while preserving `.env.example`), `.editorconfig`, and `.github/pull_request_template.md`; configure `.agents/rules/git-workflow.md`; document branch taxonomy, Conventional Commits, developer toolchain plan (Husky, lint-staged, Commitlint, ESLint, Prettier), proposed CI workflow, and GitHub branch protection checklist in `docs/GIT_GOVERNANCE.md`.
-- **Acceptance criteria:** Conventional Commits enforced; branch prefixes documented; secret protection verified; agent Git permissions explicit (no unapproved commits, pushes, or history rewriting); no premature npm dependencies or commits.
+- **Approach:** Initialize local Git repository on `main`; create `.gitignore` (isolating `.env*` while preserving `.env.example`), `.editorconfig`, issue templates (`.github/ISSUE_TEMPLATE/`), PR title semantic validation (`.github/workflows/pr-title.yml`), and `.github/pull_request_template.md`; configure `.agents/rules/git-workflow.md`; document branch taxonomy, Conventional Commits, developer toolchain plan (Husky, lint-staged, Commitlint, ESLint, Prettier), CI architecture, and GitHub branch protection checklist in `docs/GIT_GOVERNANCE.md`.
+- **Acceptance criteria:** Conventional Commits enforced; branch prefixes documented; secret protection verified; PR title validation active; agent Git permissions explicit (no unapproved commits, pushes, or history rewriting); no premature npm dependencies.
 - **Status:** `[x]` Complete
 
 ### T-001 — Collect current resume

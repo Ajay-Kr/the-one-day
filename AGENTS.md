@@ -85,6 +85,7 @@ After implementation:
 2. Report what changed.
 3. Report validation results and any checks not run.
 4. Update documentation when a decision, task, or project status changes.
+5. Follow Conventional Commits for PR titles and commit messages (`type(optional-scope): description`), and complete `.github/pull_request_template.md` truthfully.
 
 ## 7. Collaboration
 

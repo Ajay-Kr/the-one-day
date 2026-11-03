@@ -1,8 +1,9 @@
 # The One Day — Git and GitHub Governance
 
-**Status:** Confirmed Architecture Standard · 2026-11-03  
+**Status:** Confirmed Architecture Standard · Updated 2026-11-03  
 **Accepted Decision:** [`docs/DECISIONS.md`](./DECISIONS.md) (`D-020`)  
-**Workspace Rule:** [`.agents/rules/git-workflow.md`](../.agents/rules/git-workflow.md)
+**Workspace Rule:** [`.agents/rules/git-workflow.md`](../.agents/rules/git-workflow.md)  
+**Repository State:** Initial commit pushed to `main` on GitHub (`origin: git@github.com:Ajay-Kr/the-one-day.git`)
 
 ---
 
@@ -15,6 +16,8 @@ Even in solo development, strict automation and branch governance:
 - Ensure all commits tell a clean, searchable story.
 - Enforce automated quality gates before any code merges.
 - Prevent accidental leakage of personal credentials or unverified claims.
+
+The initial repository documentation, agent configuration, and baseline governance files have already been committed and pushed to `main` on GitHub (`87e5fcd`). All future changes must follow the pull request workflow documented below.
 
 ---
 
@@ -42,9 +45,9 @@ Branches must be deleted after merging to keep the repository clean.
 
 ---
 
-## 3. Commit Message Conventions (Conventional Commits)
+## 3. Commit Message & PR Title Conventions (Conventional Commits)
 
-All commits in this repository must strictly adhere to the [Conventional Commits v1.0.0](https://www.conventionalcommits.org/) specification.
+All commits and Pull Request titles in this repository must strictly adhere to the [Conventional Commits v1.0.0](https://www.conventionalcommits.org/) specification.
 
 ### Format
 ```text
@@ -57,38 +60,62 @@ type(optional-scope): description
 
 ### Allowed Types
 - `feat`: A new user-facing feature or capability.
-- `fix`: A bug fix.
+- `fix`: A bug fix or defect remediation.
 - `docs`: Documentation changes only.
-- `style`: Changes that do not affect the meaning of the code (whitespace, formatting, semicolons).
+- `style`: Changes that do not affect code logic (whitespace, formatting, semicolons).
 - `refactor`: A code change that neither fixes a bug nor adds a feature.
 - `perf`: A code change that improves performance.
 - `test`: Adding missing tests or correcting existing tests.
 - `build`: Changes that affect the build system or external dependencies.
 - `ci`: Changes to CI configuration files and scripts.
-- `chore`: Other changes that don't modify `src` or test files (e.g., repository maintenance).
+- `chore`: Maintenance, repository hygiene, or auxiliary tasks.
 - `revert`: Reverts a previous commit.
 
 ### Style Rules
 - Type and scope must be lowercase.
 - Description must be concise, imperative, and present tense (e.g., `add editorial typography tokens`, NOT `added` or `adds`).
-- No trailing period in the description line.
-- Breaking changes must include `!` before the colon or a `BREAKING CHANGE:` footer.
+- No trailing period in the description or PR title.
+- Breaking changes must include `!` before the colon (e.g., `feat(api)!: migrate endpoint`) or a `BREAKING CHANGE:` footer.
+
+### PR Title Validation vs. Local Commit Validation
+A two-layer enforcement mechanism ensures that commit history remains pristine:
+
+1. **Pull Request Title Validation (Automated GitHub Workflow):**
+   - Active immediately via [`.github/workflows/pr-title.yml`](../.github/workflows/pr-title.yml).
+   - Powered by `amannn/action-semantic-pull-request` running on `pull_request_target`.
+   - Validates that the PR title conforms strictly to Conventional Commits.
+   - When squash-merging on GitHub, the validated PR title becomes the squash commit headline on `main`. This guarantees an unbroken, pristine semantic history on `main` regardless of individual branch commits.
+2. **Local Commit-Message Validation (Developer Toolchain):**
+   - Enforced on the developer's local machine via Commitlint and Husky (`commit-msg` hook) once the npm toolchain is installed in Phase 2.
+   - Ensures individual commits on task branches remain clean during development.
 
 ---
 
-## 4. Repository Hygiene & Secret Protection
+## 4. Repository Hygiene, Templates & Secret Protection
 
 ### Files in Place
 - [`.gitignore`](../.gitignore): Excludes operating system artifacts (`.DS_Store`), dependencies (`node_modules`), Next.js build output (`.next/`, `out/`), and temporary logs.
 - **Environment Isolation:** `.gitignore` enforces `.env*` exclusion while explicitly permitting `.env.example` (`!.env.example`).
 - [`.editorconfig`](../.editorconfig): Standardizes 2-space indentation, UTF-8 charset, LF line endings, and trailing newline trimming across all development environments.
-- [`.github/pull_request_template.md`](../.github/pull_request_template.md): Provides a checklist covering Conventional Commits, TypeScript checks, WCAG 2.1 AA accessibility, reduced motion, and content integrity before merging.
+- [`.github/pull_request_template.md`](../.github/pull_request_template.md): Standardized PR template with clear separation between automated checks and human declarations.
+- [`.github/ISSUE_TEMPLATE/bug_report.md`](../.github/ISSUE_TEMPLATE/bug_report.md): Streamlined bug reporting form with device, viewport, and reproduction steps.
+- [`.github/ISSUE_TEMPLATE/feature_request.md`](../.github/ISSUE_TEMPLATE/feature_request.md): Feature proposal template aligned with The One Day's pillars and core philosophy.
+- [`.github/workflows/pr-title.yml`](../.github/workflows/pr-title.yml): Lightweight, dependency-free PR title semantic validation workflow.
+
+### PR Checklist vs. Automated Enforcement
+To ensure clarity during development and code review, verification duties are split into two complementary layers:
+
+| Layer | Responsibility | Enforced By | Scope |
+| :--- | :--- | :--- | :--- |
+| **Automated Checks** | Deterministic code validation | GitHub Actions (`pr-title.yml`, future `ci.yml`) | PR title syntax, TypeScript compilation, linting, unit tests, production build |
+| **Human Declarations** | Qualitative & ethical standards | Author & Reviewer checklist sign-off in PR template | Content integrity (no fabricated stories/metrics), real mobile/tablet responsive testing, WCAG 2.1 AA keyboard/contrast audits, reduced-motion compliance, secret exclusion, documentation synchronization |
 
 ### Strict Non-Ignored Elements
 The following directories and files must **never** be ignored by `.gitignore`:
 - `AGENTS.md` and `README.md`
 - `.agents/` (workspace rules, skills, workflows)
 - `docs/` (all project documentation)
+- `.github/` (issue templates, PR template, workflows)
 - Lockfiles (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`)
 
 ---
@@ -151,14 +178,21 @@ git push   -> Pre-push Hook (Typecheck + Unit Tests + Production Build) -> Remot
 
 ---
 
-## 6. Proposed GitHub Actions CI Design
+## 6. Continuous Integration (CI) Architecture
 
-Once the Next.js application is initialized, a continuous integration workflow will be created at `.github/workflows/ci.yml`.
+Continuous integration is rolled out in two deliberate stages to prevent CI pipeline failures:
 
-> [!NOTE]
-> Per task constraints, this workflow is documented here rather than activated immediately, avoiding CI failures against missing package scripts before the Next.js app exists.
+### Stage 1: PR Title Semantic Validation (Active Immediately)
+- Configured in [`.github/workflows/pr-title.yml`](../.github/workflows/pr-title.yml).
+- Requires zero package dependencies or build scripts.
+- Runs on `pull_request_target` with minimal `pull-requests: read` permission.
+- Verifies PR titles against Conventional Commits before any merge can proceed.
 
-### Proposed Workflow Definition (`.github/workflows/ci.yml`)
+### Stage 2: Application CI (Deferred until Next.js Initialization)
+- The full application CI pipeline (`.github/workflows/ci.yml`) is intentionally deferred until Task `T-009` (Initialize Next.js application).
+- Creating it earlier would cause immediate CI failures because `package.json`, `npm run lint`, `npm run type-check`, and `npm run build` do not yet exist.
+
+#### Proposed Stage 2 Workflow Definition (`.github/workflows/ci.yml`)
 
 ```yaml
 name: CI
@@ -216,26 +250,33 @@ jobs:
 
 ## 7. GitHub Main Branch Protection Settings Checklist
 
-Once the repository is linked to GitHub, the owner must configure the following branch protection settings manually via GitHub's web interface (**Settings > Branches > Add branch ruleset** or **Branch protection rule** for `main`):
+The repository on GitHub is public. The repository owner should configure the following branch protection settings manually via GitHub's web interface (**Settings > Branches > Add branch ruleset** or **Branch protection rule** for `main`):
 
+### Immediate Protection Settings (Ready Now)
 - [ ] **Branch name pattern:** Set to `main`.
 - [ ] **Require a pull request before merging:**
   - Check *Require a pull request before merging*.
-  - Set *Required approvals* to `0` (for solo developer) or `1` if peer review is available.
+  - Set *Required approvals* to `0` (for solo development) or `1` if collaborating.
   - Check *Dismiss stale pull request approvals when new commits are pushed*.
 - [ ] **Require status checks to pass before merging:**
   - Check *Require status checks to pass before merging*.
   - Check *Require branches to be up to date before merging*.
-  - Search for and add the required status check: `validate` (or `Build, Lint & Verify` once the CI action runs for the first time).
+  - **Status Check to require now:** `Validate PR Title` (the job name defined in `.github/workflows/pr-title.yml`). *Note: In GitHub's search box, search for `Validate PR Title` after opening your first pull request.*
 - [ ] **Require conversation resolution before merging:**
   - Check *Require conversation resolution before merging*. Ensures no unanswered questions or review comments remain open.
 - [ ] **Do not allow bypassing the above settings:**
-  - Check *Do not allow bypassing the above settings* (enforces rules even for the repo admin, preventing accidental direct pushes).
+  - Check *Do not allow bypassing the above settings* (enforces rules even for the repo owner, preventing accidental direct pushes).
 - [ ] **Restrict deletions and force pushes:**
   - Check *Lock branch* / Ensure *Allow force pushes* is **unchecked** (disabled).
   - Ensure *Allow deletions* is **unchecked** (disabled).
-- [ ] **Require linear history:**
-  - Recommended: Select *Squash merging* or *Rebase merging* in repo settings (**Settings > General > Pull Requests**) to maintain a clean linear commit log on `main`.
+- [ ] **Pull Request Merge Method:**
+  - In **Settings > General > Pull Requests**:
+    - [x] Allow squash merging (recommended for clean task-based history on `main`).
+    - [x] Default commit message: Set to *Pull request title and description* or *Pull request title*.
+    - [x] Automatically delete head branches (cleans up short-lived task branches upon merge).
+
+### Future Protection Settings (After Next.js Setup)
+- [ ] Once the application CI workflow (`ci.yml`) is activated in Task `T-009`, add the second required status check: `Build, Lint & Verify` (job ID `validate`).
 
 ---
 
@@ -246,4 +287,4 @@ Antigravity operates under strict constraints regarding repository history:
 2. **Never push or modify remotes:** The agent must never execute `git push`, change remote URLs, or alter remote branches.
 3. **Never rewrite history:** The agent must never use `git rebase -i`, `git commit --amend`, `git reset --hard`, or force pushes.
 4. **Never bypass hooks:** The agent must never append `--no-verify` to bypass Git hooks.
-
+5. **PR Compliance:** When drafting pull requests, the agent must strictly follow Conventional Commits for the PR title and complete `.github/pull_request_template.md`.
